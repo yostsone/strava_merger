@@ -48,10 +48,17 @@ export default function MyAccount() {
   }
 
   return (
-    <>
-      <h3 className="text-3xl font-bold underline">Hello { profileData.firstname?? profileData.firstname } { profileData.lastname?? profileData.lastname }! This is your acccount!</h3>
-      <img src={ profileData.photo ?? profileData.photo } alt="Profile"/>
-      <Link to={'/stats'}>Check My Stats</Link>
-    </>
-  )
+    <div className="flex flex-col p-20">
+      <div className="flex justify-center">
+          <h1 className="text-3xl">Hello { profileData.firstname?? profileData.firstname } { profileData.lastname?? profileData.lastname }! This is your acccount!</h1>
+      </div>
+      <div className="flex justify-center">
+        <img className="size-24 rounded-full border-4 border-indigo-500" src={ profileData.photo ?? profileData.photo } alt="Profile"/>
+      </div>
+      <div className="flex justify-between">
+        <Link to={'/stats'}>Check My Stats</Link>
+        <Link to={'/stats'}>Merge Activities</Link>
+      </div>
+    </div>
+  );
 }
