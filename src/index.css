@@ -7,12 +7,8 @@
   html {
     font-family: "Roboto Mono", system-ui, sans-serif;
     @apply h-screen;
-    @apply bg-emerald-300;
+    @apply bg-emerald-200;
     @apply text-emerald-900;
-  }
-
-  button, a {
-    @apply lowercase text-amber-50 border-indigo-600 border-4 p-2 bg-gradient-to-r from-indigo-600 to-indigo-400;
   }
 
   input {

@@ -11,9 +11,13 @@ export function getProfileData():Profile {
     firstname:  null,
     lastname: null,
     photo: undefined,
-    accessToken: null
+    username: null,
+    bio: null,
+    city: null,
+    createdAt: null,
+    weight: null
   };
-};
+}
 
 /**
  * Get login details from local storage
@@ -25,4 +29,4 @@ export function getUserLoginData():Creds {
     clientId: null,
     clientSecret: null
   };
-};
+}

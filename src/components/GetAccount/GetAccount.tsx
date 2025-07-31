@@ -1,25 +1,28 @@
-import React from 'react';
-
-function GetAccount() {
+/**
+ * Gets user client_id and client_secret, redirects to Strava authorization page and returns url with code
+ * @constructor
+ */
+export default function GetAccount() {
   window.localStorage.removeItem('customerData');
   const getProfileData = (formData:any): void =>  {
     let clientId: string = formData.get('clientId');
     let clientSecret: string = formData.get('clientSecret');
     window.localStorage.setItem('userLogin', JSON.stringify({ clientId, clientSecret }));
-    // @ts-ignore
+    // @ts-ignore TO BE DONE
     window.location = `http://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&approval_prompt=force&scope=read`;
   };
 
   return (
-      <div className="flex flex-col p-20">
+      <div className="flex flex-col py-10">
         <div className="flex justify-center">
           <h1>Enter Strava details</h1>
         </div>
-        <div className="flex justify-center m-5">
-          <form className="w-1/2 flex flex-col" action={ getProfileData }>
+        <div className="flex justify-center">
+          <form className="flex flex-col xl:w-1/2 " action={ getProfileData }>
             <div className="flex justify-between py-5">
               <label htmlFor="clientId">client ID:</label>
               <input
+                  required
                   type="text"
                   name="clientId"
                   placeholder="client ID"
@@ -28,16 +31,17 @@ function GetAccount() {
             <div className="flex justify-between py-5">
               <label htmlFor="clientSecret">client secret:</label>
               <input
+                  required
                   type="password"
                   name="clientSecret"
                   placeholder="client secret"
               />
             </div>
-            <button type="submit">Load My Profile</button>
+            <button type="submit" className="lowercase text-indigo-600 border-indigo-600 border-4 p-2 font-bold">
+              Load My Profile
+            </button>
           </form>
         </div>
       </div>
   )
 }
-
-export default GetAccount;
