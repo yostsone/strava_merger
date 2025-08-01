@@ -1,5 +1,23 @@
 import { Profile } from '../MyAccount/MyAccountType';
+import { NA, RAND_NUMBER } from '../../constants';
 
+/**
+ * Converts provided date in a readable way
+ * @param createdAt: string
+ */
+const readableDate = (createdAt: string):string => {
+  if (createdAt === '') {
+    return '-';
+  }
+
+  return new Date(createdAt).toLocaleString('en-us',{ month:'short', day: 'numeric', year:'numeric'});
+}
+
+/**
+ * Displays logged in user data
+ * @param props
+ * @constructor
+ */
 export default function MyAccountInfo( { props }: { props: Profile }) {
   const { firstname, lastname, photo, bio, city, createdAt, weight } = props;
 
@@ -15,22 +33,14 @@ export default function MyAccountInfo( { props }: { props: Profile }) {
          <div className="border-b-2 border-emerald-900 text-right">Full name</div>
          <div className="border-b-2 border-emerald-900">{ firstname } { lastname }</div>
          <div className="border-b-2 border-emerald-900 text-right">Bio</div>
-         <div className="border-b-2 border-emerald-900">{ bio }</div>
+         <div className="border-b-2 border-emerald-900">{ (bio === '') ? NA: bio }</div>
          <div className="border-b-2 border-emerald-900 text-right">Current City</div>
-         <div className="border-b-2 border-emerald-900">{ city }</div>
+         <div className="border-b-2 border-emerald-900">{ (city === '') ? NA: city }</div>
          <div className="border-b-2 border-emerald-900 text-right">Weight</div>
-         <div className="border-b-2 border-emerald-900">{ weight }</div>
+         <div className="border-b-2 border-emerald-900">{ (!weight) ? RAND_NUMBER: weight } muffins</div>
          <div className="border-b-2 border-emerald-900 text-right">Enjoys strava since</div>
          <div className="border-b-2 border-emerald-900">{ readableDate(createdAt) }</div>
        </div>
      </>
   );
-}
-
-const readableDate = (createdAt: string):string => {
-  if (createdAt === '') {
-    return '-';
-  }
-
-  return new Date(createdAt).toLocaleString('en-us',{ month:'short', day: 'numeric', year:'numeric'});
 }

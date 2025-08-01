@@ -1,8 +1,11 @@
 import MyAccount from '../MyAccount/MyAccount';
-import GetAccount from '../GetAccount/GetAccount';
+import Login from '../Login/Login';
 import { getUserLoginData, getProfileData } from '../../utils/User';
-import { Creds, Profile } from "../MyAccount/MyAccountType";
+import { Creds, Profile } from '../MyAccount/MyAccountType';
 
+/**
+ * Renders My account page for logged-in users and login page for others
+ */
 export default function Home() {
   const userLoginData: Creds = getUserLoginData();
   const userProfile: Profile = getProfileData();
@@ -14,6 +17,6 @@ export default function Home() {
   }
 
   return (
-      <GetAccount />
+      <Login />
   );
 }

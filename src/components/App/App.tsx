@@ -1,9 +1,10 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import Home from '../Home/Home';
 import MyStats from '../MyStats/MyStats';
-import Header from "../HeaderFooter/Header";
+import Header from '../HeaderFooter/Header';
+import Footer from '../HeaderFooter/Footer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path='stats' element={<MyStats/>}/>
         </Routes>
       </div>
+      <Footer />
     </BrowserRouter>
   );
 }

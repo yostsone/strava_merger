@@ -2,14 +2,14 @@
  * Gets user client_id and client_secret, redirects to Strava authorization page and returns url with code
  * @constructor
  */
-export default function GetAccount() {
+export default function Login() {
   window.localStorage.removeItem('customerData');
   const getProfileData = (formData:any): void =>  {
     let clientId: string = formData.get('clientId');
     let clientSecret: string = formData.get('clientSecret');
     window.localStorage.setItem('userLogin', JSON.stringify({ clientId, clientSecret }));
     // @ts-ignore TO BE DONE
-    window.location = `http://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&approval_prompt=force&scope=read`;
+    window.location = `http://www.strava.com/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all`;
   };
 
   return (
