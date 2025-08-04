@@ -1,7 +1,7 @@
+import { Creds, Profile } from '../MyAccount/MyAccountType';
 import MyAccount from '../MyAccount/MyAccount';
 import Login from '../Login/Login';
 import { getUserLoginData, getProfileData } from '../../utils/User';
-import { Creds, Profile } from '../MyAccount/MyAccountType';
 
 /**
  * Renders My account page for logged-in users and login page for others

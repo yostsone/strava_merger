@@ -11,4 +11,5 @@ export type BrowserDatabaseType = {
   clientId?: string
   clientSecret?: string
   data?: string
+  id?: number
 }

@@ -1,12 +1,14 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import Home from '../Home/Home';
 import MyStats from '../MyStats/MyStats';
 import Header from '../HeaderFooter/Header';
 import Footer from '../HeaderFooter/Footer';
+import { setInitialUser } from '../../utils/User';
 
 function App() {
+  setInitialUser();
+
   return (
     <BrowserRouter>
       <Header />

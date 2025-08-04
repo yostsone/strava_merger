@@ -1,6 +1,5 @@
 /**
  * Gets user client_id and client_secret, redirects to Strava authorization page and returns url with code
- * @constructor
  */
 export default function Login() {
   window.localStorage.removeItem('customerData');
