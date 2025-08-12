@@ -1,14 +1,14 @@
 export type Profile = {
-  id: number | null
-  firstname: string | null
-  lastname: string | null
-  photo: string | undefined
-  username:  string | null
-  bio:  string | null
-  city:  string | null
+  id: number
+  firstname: string
+  lastname: string
+  photo: string
+  username:  string
+  bio:  string
+  city:  string
   createdAt:  string
-  weight:  number | null
-  accessToken: string | null
+  weight:  number
+  accessToken: string
 };
 
 export type Creds = {

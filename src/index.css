@@ -18,4 +18,8 @@
   h1 {
     @apply text-2xl underline underline-offset-4 uppercase;
   }
+
+  #root {
+    @apply flex flex-col h-screen;
+  }
 }

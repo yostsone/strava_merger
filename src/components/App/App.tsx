@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <div className="h-screen md:w-2/3 lg:w-1/2 mx-auto md:border-x-4 md:border-dashed md:border-indigo-400 ">
+      <div className="grow md:w-2/3 lg:w-1/2 mx-auto md:border-x-4 md:border-dashed md:border-indigo-400 ">
         <Routes>
           <Route path='' element={<Home/>}/>
           <Route path='stats' element={<MyStats/>}/>

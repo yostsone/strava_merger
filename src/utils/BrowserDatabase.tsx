@@ -1,19 +1,17 @@
-import { BrowserDatabaseType } from './BrowserDatabaseType';
-
 /*
   Get data by key from browser local storage
  */
-export function getStorageData(key:string): BrowserDatabaseType | boolean {
+export function getStorageData<T>(key:string): T | string | boolean {
   const data = window.localStorage.getItem(key);
 
   if (!data) {
     return false;
   }
 
-  const parsedData = stringParse(data);
+  const parsedData = stringParse<T>(data);
 
   if (!parsedData) {
-    return { data };
+    return data;
   }
 
   return parsedData;
@@ -29,7 +27,7 @@ export function deleteStorageData(key: string):void {
 /*
   Set provided key and data to browser local storage
  */
-export function setStorageData(key: string, data: BrowserDatabaseType | string ): void {
+export function setStorageData<T extends object>(key: string, data: T | string ): void {
   let dataToString: object = {};
 
   if (typeof data === 'string') {
@@ -43,8 +41,12 @@ export function setStorageData(key: string, data: BrowserDatabaseType | string )
   }
 }
 
-function stringParse(value: string): BrowserDatabaseType | boolean  {
-  let result: BrowserDatabaseType | boolean = false;
+/**
+ * Parse provided value if possible. Returns parsed value or false.
+ * @param value
+ */
+function stringParse<T>(value: string): T | boolean  {
+  let result: T | boolean = false;
 
   try {
     result = JSON.parse(value);

@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { Creds, Profile } from '../components/MyAccount/MyAccountType';
-import { setStorageData} from './BrowserDatabase/BrowserDatabase';
+import { getStorageData, setStorageData } from './BrowserDatabase';
 import { USER_LOGIN, PROFILE_DATA, PROFILE_DETAILS, STORAGE } from '../constants';
 
 const getProfileFromLocalStorage = (): string => {
@@ -33,7 +33,8 @@ export  function useProfileStore(): [string, (newProfile: string) => void]{
   };
 
   return [profile, setProfile];
-};
+}
+
 /**
  * Get value from local storage if available
  */
@@ -56,12 +57,12 @@ export function getProfileData():Profile {
  * Get login details from local storage
  */
 export function getUserLoginData():Creds {
-  const userLogin = window.localStorage.getItem(USER_LOGIN);
+  const userLogin = getStorageData<Creds>(USER_LOGIN)
 
-  return (userLogin !== null) ? JSON.parse(userLogin) : {
+  return (typeof userLogin === 'boolean' || typeof userLogin === 'string')? {
     clientId: null,
     clientSecret: null
-  };
+  }: userLogin;
 }
 
 /**
