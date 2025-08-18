@@ -6,7 +6,7 @@ import { getUserData } from './MyAccountApi';
 import MyAccountInfo from '../MyAccountInfo/MyAccountInfo';
 import Loader from '../Loader/Loader';
 import { getProfileData, getUserLoginData, useProfileStore } from '../../utils/User';
-import { deleteStorageData } from '../../utils/BrowserDatabase/BrowserDatabase';
+import { deleteStorageData } from '../../utils/BrowserDatabase';
 import { USER_LOGIN, AUTH_CODE } from '../../constants';
 
 export default function MyAccount() {
@@ -53,15 +53,15 @@ export default function MyAccount() {
 
   const { firstname, lastname, photo } = profileData;
 
-  if (firstname && lastname && photo ) {
+  if (firstname !== '' && lastname !== '' && photo !== '') {
     return (
         <div className="flex flex-col p-10">
           <MyAccountInfo props={ profileData } />
           <div className="flex justify-between pt-10">
-            <NavLink to={'/stats'} className="lowercase text-indigo-600 border-indigo-600 border-4 p-2 font-bold">
+            <NavLink to={'/stats'} className="lowercase text-lime-900 border-lime-900 border-4 p-2 font-bold transition-colors delay-150 hover:bg-lime-100">
               Check My Stats
             </NavLink>
-            <NavLink to={'/stats'} className="lowercase text-indigo-600 border-indigo-600 border-4 p-2 font-bold">
+            <NavLink to={'/merge'} className="lowercase text-lime-900 border-lime-900 border-4 p-2 font-bold transition-colors delay-150 hover:bg-lime-100">
               Merge Activities
             </NavLink>
           </div>

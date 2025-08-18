@@ -27,7 +27,6 @@ export  function useProfileStore(): [string, (newProfile: string) => void]{
   const profile = useSyncExternalStore(subscribe, getProfileFromLocalStorage);
 
   const setProfile = (newProfile: string) => {
-
     setStorageData(PROFILE_DATA, JSON.parse(newProfile));
     window.dispatchEvent(new Event(STORAGE));
   };

@@ -20,7 +20,7 @@ export default function PieChart({ activityData, description }: { activityData: 
   };
 
   return (
-      <div className="pt-10">
+      <div className="pt-10 flex justify-center">
         <Doughnut data={data} />
       </div>
   )

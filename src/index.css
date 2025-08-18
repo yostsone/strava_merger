@@ -7,12 +7,12 @@
   html {
     font-family: "Roboto Mono", system-ui, sans-serif;
     @apply h-screen;
-    @apply bg-emerald-200;
-    @apply text-emerald-900;
+    @apply bg-amber-50;
+    @apply text-lime-900;
   }
 
   input {
-    @apply py-1.5 pr-3 pl-3 rounded-sm focus-within:outline-1 focus-within:-outline-offset-1 focus-within:outline-indigo-600;
+    @apply py-1.5 pr-3 pl-3 rounded-sm focus-within:outline-1 focus-within:-outline-offset-1 focus-within:outline-lime-900 bg-amber-50;
   }
 
   h1 {
