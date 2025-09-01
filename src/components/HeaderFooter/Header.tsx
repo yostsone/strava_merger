@@ -34,7 +34,7 @@ export default function Header() {
         </div>
         <HeaderLogo />
         <div className="flex justify-end basis-1/3">
-          <span className="p-4 border-transparent text-amber-50">{ username }</span>
+          <span className="hidden sm:inline p-4 border-transparent text-amber-50">{ username }</span>
           <img className="m-2 size-10 rounded-full border-4 border-amber-50" src={ photo } alt="Profile"/>
         </div>
       </div>

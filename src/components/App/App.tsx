@@ -14,7 +14,7 @@ function App() {
   return (
     <BrowserRouter basename={basename}>
       <Header />
-      <div className="grow md:w-2/3 lg:w-1/2 mx-auto border-none md:border-x-8 lg:border-dashed lg:border-lime-900 ">
+      <div className="grow w-full lg:w-2/3 2xl:w-1/2 mx-auto border-none md:border-x-8 lg:border-dashed lg:border-lime-900 ">
         <Routes>
           <Route path='' element={<Home/>}/>
           <Route path='stats' element={<MyStats/>}/>

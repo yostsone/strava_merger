@@ -15,3 +15,8 @@ export type Creds = {
   clientId: string | null
   clientSecret: string | null
 }
+
+export type ApiClient = {
+  id: number,
+  accessToken: string
+};

@@ -12,7 +12,7 @@
   }
 
   input {
-    @apply py-1.5 pr-3 pl-3 rounded-sm focus-within:outline-1 focus-within:-outline-offset-1 focus-within:outline-lime-900 bg-amber-50;
+    @apply py-1.5 pr-3 pl-3 focus-within:outline-1 focus-within:-outline-offset-1 focus-within:outline-lime-900 focus-within:border-transparent bg-amber-50;
   }
 
   h1 {

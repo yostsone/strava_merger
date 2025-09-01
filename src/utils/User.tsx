@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { Creds, Profile } from '../components/MyAccount/MyAccountType';
+import { Creds, Profile, ApiClient } from '../components/MyAccount/MyAccountType';
 import { getStorageData, setStorageData } from './BrowserDatabase';
 import { USER_LOGIN, PROFILE_DATA, PROFILE_DETAILS, STORAGE } from '../constants';
 
@@ -73,4 +73,19 @@ export function setInitialUser(): void {
   if (!profileData) {
     localStorage.setItem(PROFILE_DATA, JSON.stringify(PROFILE_DETAILS));
   }
+}
+
+/**
+ * Getting necessary user data to use API calls
+ */
+export function getUserApiData(): ApiClient {
+  const apiProfileInfo = getStorageData<Profile>(PROFILE_DATA);
+
+  if (typeof apiProfileInfo === 'boolean' || typeof apiProfileInfo === 'string') {
+    return { id: 0, accessToken: '' };
+  }
+
+  const { id = 0, accessToken = '' } = apiProfileInfo;
+
+  return { id, accessToken };
 }

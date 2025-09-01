@@ -50,7 +50,7 @@ export default function Login() {
   };
 
   return (
-      <div className="flex flex-col p-5 lg:p-10 lg:m-10 xl:m-20 bg-gradient-to-r from-amber-100 to-lime-100 relative">
+      <div className="h-full lg:h-auto flex flex-col p-5 lg:p-16 lg:m-10 xl:m-20 bg-gradient-to-r from-amber-100 to-lime-100 relative">
         <div className="flex justify-center">
           <h1>Enter Strava details</h1>
         </div>
@@ -60,6 +60,7 @@ export default function Login() {
             <div className="flex justify-between py-5">
               <label className="py-1.5 pr-3" htmlFor={ CLIENT_ID }>client ID:</label>
               <input
+                  className="border-2 border-dashed border-lime-900"
                   required
                   type="text"
                   name={ CLIENT_ID }
@@ -69,6 +70,7 @@ export default function Login() {
             <div className="flex justify-between py-5">
               <label className="py-1.5 pr-3" htmlFor={ CLIENT_SECRET }>client secret:</label>
               <input
+                  className="border-2 border-dashed border-lime-900"
                   required
                   type="password"
                   name={ CLIENT_SECRET }
