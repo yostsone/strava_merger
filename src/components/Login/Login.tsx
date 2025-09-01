@@ -22,12 +22,13 @@ export default function Login() {
     let clientId: FormDataEntryValue | null = formData.get(CLIENT_ID);
     let clientSecret: FormDataEntryValue | null = formData.get(CLIENT_SECRET);
     const url = `/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${currentUrl}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all`
+    const redirectUrl = (currentUrl.includes('localhost') ? url : `https://www.strava.com${url}`)
     /**
      * Error handling to check whether the user ID is correct. And with most probably it will be correct if functionality
      * below throws an error, because it means that the redirect is successful. Other cases are covered under specific
      * status codes.
      */
-    fetch(url)
+    fetch(redirectUrl)
         .then((response:Response) => {
           const { status } = response;
 
