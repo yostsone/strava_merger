@@ -18,9 +18,10 @@ export default function Login() {
   const handleProfileData = (formData:FormData): void =>  {
     setIsLoading(true);
     setErrorMessage('');
+    const currentUrl = window.location.href;
     let clientId: FormDataEntryValue | null = formData.get(CLIENT_ID);
     let clientSecret: FormDataEntryValue | null = formData.get(CLIENT_SECRET);
-    const url = `/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=http://localhost:3000/&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all`
+    const url = `/oauth/authorize?client_id=${clientId}&response_type=code&redirect_uri=${currentUrl}&approval_prompt=force&scope=activity:read_all,activity:write,profile:read_all`
     /**
      * Error handling to check whether the user ID is correct. And with most probably it will be correct if functionality
      * below throws an error, because it means that the redirect is successful. Other cases are covered under specific

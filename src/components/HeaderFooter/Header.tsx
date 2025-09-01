@@ -1,11 +1,11 @@
 import { Profile } from '../MyAccount/MyAccountType';
 import { useProfileStore } from '../../utils/User';
 import { deleteStorageData } from '../../utils/BrowserDatabase';
-import { PROFILE_DATA , PROFILE_DETAILS } from '../../constants';
+import { PROFILE_DATA , PROFILE_DETAILS, GH_SUB_LINK } from '../../constants';
 import HeaderLogo from './HeaderLogo';
 
 const logOut = () => {
-  window.location.href = '/';
+  window.location.href = `/${GH_SUB_LINK}`;
   deleteStorageData(PROFILE_DATA);
 };
 

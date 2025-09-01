@@ -16,3 +16,4 @@ export const PROFILE_DETAILS = {
   accessToken: ''
 };
 export const STORAGE = 'storage';
+export const GH_SUB_LINK = 'strava_merger';
