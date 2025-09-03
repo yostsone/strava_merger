@@ -3,6 +3,7 @@ import { useProfileStore } from '../../utils/User';
 import { deleteStorageData } from '../../utils/BrowserDatabase';
 import { PROFILE_DATA , PROFILE_DETAILS, GH_SUB_LINK } from '../../constants';
 import HeaderLogo from './HeaderLogo';
+import ImageLoader from "../ImageLoader/ImageLoader";
 
 const logOut = () => {
   window.location.href = `/${GH_SUB_LINK}`;
@@ -35,7 +36,7 @@ export default function Header() {
         <HeaderLogo />
         <div className="flex justify-end basis-1/3">
           <span className="hidden sm:inline p-4 border-transparent text-amber-50">{ username }</span>
-          <img className="m-2 size-10 rounded-full border-4 border-amber-50" src={ photo } alt="Profile"/>
+          <ImageLoader src={ photo } alt="Profile" styles="m-2 size-10 rounded-full border-4 border-amber-50" />
         </div>
       </div>
   )

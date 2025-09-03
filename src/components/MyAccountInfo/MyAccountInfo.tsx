@@ -1,5 +1,6 @@
 import { Profile } from '../MyAccount/MyAccountType';
 import { NA, RAND_NUMBER } from '../../constants';
+import ImageLoader from '../ImageLoader/ImageLoader';
 
 /**
  * Converts provided date in a readable way
@@ -27,7 +28,7 @@ export default function MyAccountInfo( { props }: { props: Profile }) {
          <h1>Hello { firstname }!</h1>
        </div>
        <div className="flex justify-center pt-10">
-         <img className="size-24 rounded-full border-4 border-amber-500" src={ photo } alt="Profile"/>
+         <ImageLoader src={ photo } alt="Profile" styles="size-24 rounded-full border-4 border-amber-500"/>
        </div>
        <div className="grid grid-cols-2 gap-4 pt-10">
          <div className="border-b-2 border-lime-900 text-right">Full name</div>
