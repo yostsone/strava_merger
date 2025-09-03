@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useRef, useLayoutEffect, useState, useMemo } from 'react';
 import { Activity } from './PieChartType';
 
 type Props = {
@@ -10,7 +10,11 @@ export default function PieChart({ data, type }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const colors = ['rgb(255,116,108)', 'rgb(99,149,238)',  'rgb(128,239,128)'];
+  const colors = useMemo(() => [
+    "#2196f3",
+    "#ff9800",
+    "#e91e63",
+  ], []);
 
   // Use useEffect to get initial container dimensions and handle resize
   useEffect(() => {

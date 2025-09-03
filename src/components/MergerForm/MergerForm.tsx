@@ -1,26 +1,20 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, useCallback, ChangeEvent } from 'react';
 import { postActivity, validateActivity } from './MergerFormApi';
 import { mergeGpxFiles } from '../../utils/MergeGpxFiles';
-import Loader from "../Loader/Loader";
+import Loader from '../Loader/Loader';
+import FileUpload from '../Field/FileUpload';
 
 type Files = {
   file1: File | null,
   file2: File | null
-}
-
-/**
- * Handles drag events to prevent default behavior
- * @param e
- */
-function handleDrag(e: React.DragEvent<HTMLDivElement>) {
-  e.preventDefault();
-  e.stopPropagation();
-}
+};
+const DEFAULT_ERROR = 'There was an error posting your activity. Please try again.'
+const WRONG_TYPE_ERROR = 'Invalid file type. Please upload a valid GPX file.'
+const validateInputType = (file: File):boolean => file.type === 'application/gpx+xml' || file.name.endsWith('.gpx');
 
 export default function MergerForm() {
   const [files, setFiles] = useState<Files>({file1: null, file2: null});
-  const [isLoading, setIsLoading] = useState(false);
-  const [loaderInfo, setLoaderInfo] = useState('Loading...');
+  const [loader, setLoader] = useState({ isLoading: false, info: 'Loading..'});
   const [error, setError] = useState('');
   const [successLink, setSuccessLink] = useState('');
 
@@ -28,98 +22,104 @@ export default function MergerForm() {
    * Handles file drop event to update state with dropped file
    * @param e
    */
-  function handleDrop(e: React.DragEvent<HTMLDivElement>){
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
     e.stopPropagation();
+    setError('');
     const uploadId = e.currentTarget.id;
 
-    if (uploadId && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      setFiles(prevFiles => ({
-        ...prevFiles,
-        [uploadId]: e.dataTransfer.files[0]
-      }));
+    if (!uploadId || !e.dataTransfer.files || e.dataTransfer.files.length === 0 ) {
+      setError(DEFAULT_ERROR);
+      return;
     }
 
-    if (!uploadId) {
-      setError('There was an error with the upload. Please try again.');
+    const uploadedFile = e.dataTransfer.files[0];
+    if (validateInputType(uploadedFile)) {
+      setFiles(prevFiles => ({
+        ...prevFiles,
+        [uploadId]: uploadedFile
+      }));
+    } else {
+      setError(WRONG_TYPE_ERROR);
     }
-  }
+  }, []);
 
   /**
    * Handles file input change event to update state with selected file
    * @param e
    */
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>):void => {
     const { name, files } = e.currentTarget;
 
-    if (files !== null && name && files.length > 0) {
+    if (files === null || !name || files.length < 1 ) {
+      setError(DEFAULT_ERROR);
+      return;
+    }
+
+    if (validateInputType(files[0])) {
       setFiles(prevFiles => ({
         ...prevFiles,
         [name]: files[0]
       }));
+    } else {
+      setError(WRONG_TYPE_ERROR);
     }
-  }
+  }, []);
 
-  async function handleSubmit(formData: FormData) {
+  /**
+   * Handles form submission to merge and post files
+   * @param e
+   */
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!files.file1 || !files.file2) {
+      setError('Please upload both files before submitting.')
+      return;
+    }
+
     try {
-      setIsLoading(true);
-      setLoaderInfo('Posting your activity to Strava...');
-      if (!files.file1 || !files.file2) {
-        setError('Both files are required!');
-        return;
-      }
-
+      setError('');
+      setLoader({ isLoading: true, info: 'Posting your activity to Strava...' });
+      const formData = new FormData(e.currentTarget);
       const gpxFile = await mergeGpxFiles(files.file1, files.file2);
       formData.append('file', gpxFile);
-      postActivity( formData)
-          .then(response => {
-            const { id, status, error } = response.data;
-            if (error) {
-              setError(error);
-              setIsLoading(false);
-              return;
-            }
-            setLoaderInfo(status);
-            new Promise(resolve => setTimeout(resolve, 5000))
-                .then(()=> {
-                  validateActivity(id)
-                      .then(res => {
-                        const { status, error, activity_id } = res.data;
+      const response = await postActivity(formData);
+      const { id, status, error: postError } = response.data;
 
-                        if (error) {
-                          if (error.includes('duplicate')) {
-                            setError('This activity appears to be a duplicate and cannot be uploaded.');
-                          } else {
-                            setError('There was an error with your activity. Please try again.');
-                          }
-                          setIsLoading(false);
-                        } else if (status === 'Your activity is ready.') {
-                          setLoaderInfo('Your activity has been posted to Strava!');
-                          setSuccessLink(`https://www.strava.com/activities/${activity_id}`);
-                          setIsLoading(false);
-                        }
-                      })
-                }
-            );
-          })
-          .catch(error => {
-            setError('There was an error posting your activity. Please try again.');
-            setIsLoading(false);
-          })
-          .finally(() =>
-              setFiles({file1: null, file2: null})
-          );
-    }
-    catch(e) {
-      setIsLoading(false);
-      setError('There was an error processing your files. Please try again.');
+      if (postError) {
+        setError(postError);
+        setLoader({ isLoading: false, info: '' });
+        return;
+      }
+      setLoader(prevState => ({ ...prevState, info: status }));
+      // Simulate waiting time for Strava to process the activity
+      await new Promise(res => setTimeout(res, 5000));
+      // validation handling
+      const validation = await validateActivity(id);
+      const { status: validationStatus, error: validationError, activity_id } = validation.data;
+
+      if (validationError) {
+        const errorMessage = validationError.includes('duplicate')
+            ? 'This activity appears to be a duplicate and cannot be uploaded.'
+            : DEFAULT_ERROR
+        setError(errorMessage);
+      }
+
+      if (validationStatus === 'Your activity is ready.') {
+        setSuccessLink(`https://www.strava.com/activities/${activity_id}`);
+        setFiles({file1: null, file2: null});
+      }
+    } catch (err: any) {
+      setError(err.message || DEFAULT_ERROR);
+    } finally {
+      setLoader({ isLoading: false, info: '' });
     }
   }
 
   return (
     <div className="h-full lg:h-auto flex flex-col p-5 lg:p-10 mt-10 relative">
       <form
-          action={handleSubmit}
+          onSubmit={handleSubmit}
           className="flex flex-col"
       >
         <input type="text" name="data_type" defaultValue="gpx" hidden/>
@@ -143,56 +143,22 @@ export default function MergerForm() {
               placeholder="describe your activity"
           />
         </div>
-        <div className="flex flex-col py-2">
-          <h2>Upload 1st activity file (.gpx)</h2>
-          <div
-              className="border-2 border-dashed border-lime-900 bg-amber-50 text-center mb-10 mt-2"
-              onDragEnter={handleDrag}
-              onDragOver={handleDrag}
-              onDragLeave={handleDrag}
-              onDrop={handleDrop}
-              id="file1"
-          >
-            <input
-                className="h-0 w-0 p-px absolute"
-                name="file1"
-                id="input1"
-                type="file"
-                onChange={handleChange}
-                required
-            />
-            <label id="file1" htmlFor="input1" className="p-10 block cursor-pointer">
-              {files.file1
-                  ? files.file1.name
-                  : 'Drag & drop files here or click to select'}
-            </label>
-          </div>
-        </div>
-        <div className="flex flex-col py-2">
-          <h2>Upload 2nd activity file (.gpx)</h2>
-          <div
-              className="border-2 border-dashed border-lime-900 bg-amber-50 text-center mb-10 mt-2"
-              onDragEnter={handleDrag}
-              onDragOver={handleDrag}
-              onDragLeave={handleDrag}
-              onDrop={handleDrop}
-              id="file2"
-          >
-            <input
-                className="h-0 w-0 p-px absolute"
-                name="file2"
-                id="input2"
-                type="file"
-                onChange={handleChange}
-                required
-            />
-            <label id="file2" htmlFor="input2" className="p-10 block cursor-pointer">
-              {files.file2
-                  ? files.file2.name
-                  : 'Drag & drop files here or click to select'}
-            </label>
-          </div>
-        </div>
+        <FileUpload
+            labelText='Upload 1st activity file (.gpx)'
+            dropId='file1'
+            uploadId='upload1'
+            handleChange={handleChange}
+            handleDrop={handleDrop}
+            file={files.file1}
+        />
+        <FileUpload
+            labelText='Upload 2nd activity file (.gpx)'
+            dropId='file2'
+            uploadId='upload2'
+            handleChange={handleChange}
+            handleDrop={handleDrop}
+            file={files.file2}
+        />
         <button
             className="lowercase text-lime-900 border-lime-900 border-4 p-2 mb-2 font-bold transition-colors delay-150 hover:bg-amber-100"
             type="submit"
@@ -203,10 +169,10 @@ export default function MergerForm() {
       {successLink !== '' &&
           <div className="mt-20 p-10 bg-amber-200">
             <h2>Your activity is successfully posted!</h2>
-            <div>You can check it out on Strava now. Here is <a href={successLink} target="_blank"><strong>LINK</strong></a> to your activity.</div>
+            <div>You can check it out on Strava now. Here is a <a href={successLink} target="_blank" rel="noreferrer"><strong>LINK</strong></a> to your activity.</div>
           </div>
       }
-      <Loader isLoading={isLoading} info={loaderInfo} />
+      <Loader isLoading={loader.isLoading} info={loader.info} />
       <span className="w-full font-bold text-red-500 text-center absolute left-1/2 transform -translate-x-1/2 bottom-3">
         { error }
       </span>
