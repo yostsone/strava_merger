@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/strava_merger/static/css/main.5f79ab5f.css",
-    "main.js": "/strava_merger/static/js/main.8bab08e4.js",
+    "main.css": "/strava_merger/static/css/main.50d99d8d.css",
+    "main.js": "/strava_merger/static/js/main.5430b03e.js",
     "static/js/453.96453769.chunk.js": "/strava_merger/static/js/453.96453769.chunk.js",
     "index.html": "/strava_merger/index.html",
-    "main.5f79ab5f.css.map": "/strava_merger/static/css/main.5f79ab5f.css.map",
-    "main.8bab08e4.js.map": "/strava_merger/static/js/main.8bab08e4.js.map",
+    "main.50d99d8d.css.map": "/strava_merger/static/css/main.50d99d8d.css.map",
+    "main.5430b03e.js.map": "/strava_merger/static/js/main.5430b03e.js.map",
     "453.96453769.chunk.js.map": "/strava_merger/static/js/453.96453769.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5f79ab5f.css",
-    "static/js/main.8bab08e4.js"
+    "static/css/main.50d99d8d.css",
+    "static/js/main.5430b03e.js"
   ]
 }
