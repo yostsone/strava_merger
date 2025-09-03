@@ -1,14 +1,12 @@
 import { useEffect, useState} from 'react';
 import { AxiosResponse } from 'axios';
-import { Activities, Measure} from '../PieChart/PieChartType';
+import { Measure } from '../PieChart/PieChartType';
 import { getMyStats } from './MyStatsApi';
 import MyStatsBlock from './MyStatsBlock';
 
-const initActivity:Activities = { run: 0, ride: 0, swim: 0 };
-
 export default function MyStats() {
-  const [activityTotal, setActivityTotal] = useState<Measure>({ distance: initActivity, amount: initActivity });
-  const [activityYtd, setActivityYtd] = useState<Measure>({ distance: initActivity, amount: initActivity });
+  const [activityTotal, setActivityTotal] = useState<Measure>({ distance: [], amount: [] });
+  const [activityYtd, setActivityYtd] = useState<Measure>({distance:[], amount:[]});
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -25,29 +23,27 @@ export default function MyStats() {
           }
         } = response;
         setActivityTotal({
-          distance: {
-            run: Math.round(distanceRunAll/1000),
-            swim: Math.round(distanceSwimAll/1000),
-            ride: Math.round(distanceRideAll/1000)
-          },
-          amount: {
-            run: countRunAll,
-            swim: countSwimAll,
-            ride: countRideAll
-          }
+          distance: [
+            { label: 'run', value: Math.round(distanceRunAll/1000) },
+            { label: 'swim', value: Math.round(distanceSwimAll/1000) },
+            { label: 'ride', value: Math.round(distanceRideAll/1000) }
+          ],
+          amount: [
+            { label: 'run', value: countRunAll },
+            { label: 'swim', value: countSwimAll },
+            { label: 'ride', value: countRideAll }
+          ]
         });
-
         setActivityYtd({
-          distance: {
-            run: Math.round(distanceRunYtd/1000),
-            swim: Math.round(distanceSwimYtd/1000),
-            ride: Math.round(distanceRideYtd/1000)
-          },
-          amount: {
-            run: countRunYtd,
-            swim: countSwimYtd,
-            ride: countRideYtd
-          }
+          distance: [
+            { label: 'run', value: Math.round(distanceRunYtd/1000) },
+            { label: 'swim', value: Math.round(distanceSwimYtd/1000) },
+            { label: 'ride', value: Math.round(distanceRideYtd/1000) }
+          ], amount: [
+            { label: 'run', value: countRunYtd },
+            { label: 'swim', value: countSwimYtd },
+            { label: 'ride', value: countRideYtd }
+          ]
         });
       }).catch((error) => {
       setIsError(true);
@@ -65,29 +61,29 @@ export default function MyStats() {
   }
 
   return (
-      <div className="flex flex-col p-10">
+      <div className="flex flex-col pt-10 md:p-10">
         <div className="flex justify-center">
           <h1>My Stats</h1>
         </div>
         <MyStatsBlock
-          title='activity amount that is done this year so far'
+          title='activity amount this year'
           activityData={activityYtd.amount}
-          description='Activity amount:'
+          type='amount'
          />
         <MyStatsBlock
-            title='kilometers this year'
-            activityData={activityYtd.distance}
-            description='km amount:'
+          title='kilometers this year'
+          activityData={activityYtd.distance}
+          type='distance'
         />
         <MyStatsBlock
-            title='activity amount done over the years'
-            activityData={activityTotal.amount}
-            description='Activity amount:'
+          title='activities done over the years'
+          activityData={activityTotal.amount}
+          type='amount'
         />
         <MyStatsBlock
-            title='kilometers done over the years'
-            activityData={activityTotal.distance}
-            description='km amount:'
+          title='kilometers done over the years'
+          activityData={activityTotal.distance}
+          type='distance'
         />
       </div>
   );

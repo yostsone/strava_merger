@@ -1,10 +1,11 @@
-export type Activities = {
-  run: number
-  swim: number
-  ride: number
+export type Measure = {
+  distance: Activity[]
+  amount: Activity[]
 }
 
-export type Measure = {
-  distance: Activities
-  amount: Activities
+export type Activity = {
+  label: ActivityType
+  value: number
 }
+
+type ActivityType = 'run' | 'swim' | 'ride';

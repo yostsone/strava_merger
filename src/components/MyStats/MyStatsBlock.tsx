@@ -1,15 +1,19 @@
-import { Activities } from '../PieChart/PieChartType';
+import { Activity } from '../PieChart/PieChartType';
 import PieChart from '../PieChart/PieChart';
 
-export default function MyStatsBlock({
-  title, activityData, description }: { title: string, activityData:Activities, description: string }
-){
+type Props = {
+  title: string,
+  activityData:Activity[],
+  type: 'distance' | 'amount'
+}
+
+export default function MyStatsBlock({ title, activityData, type }: Props){
   return (
-      <div className="p-10 border-dashed border-amber-500 border-b-4 last:border-none">
+      <div className="pt-10 md:p-10 border-solid border-lime-900 border-b-4 last:border-none">
         <div className="text-center font-bold">
           <h2>{ title }</h2>
         </div>
-        <PieChart activityData={activityData} description={description}/>
+        <PieChart data={activityData} type={type}/>
       </div>
   )
 }
